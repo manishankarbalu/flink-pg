@@ -1,0 +1,45 @@
+apiVersion: flink.apache.org/v1beta1
+kind: FlinkDeployment
+metadata:
+  namespace: flink-jobs
+  name: basic-example
+spec:
+  image: flink:1.17
+  flinkVersion: v1_17
+  podTemplate:
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      name: pod-template
+    spec:
+      containers:
+        - name: flink-main-container
+          env:
+            - name: ENABLE_BUILT_IN_PLUGINS
+              value: flink-s3-fs-hadoop-1.17.2.jar
+  flinkConfiguration:
+    taskmanager.numberOfTaskSlots: "1"
+    state.savepoints.dir: s3://test/savepoins
+    state.checkpoints.dir: s3://test/checkpoints
+    s3.endpoint: http://minio-svc.minio-dev:9000
+    s3.path.style.access: "true"
+    s3.access-key: minioadmin
+    s3.secret-key: minioadmin
+  ingress:
+    template: "/{{namespace}}/{{name}}(/|$)(.*)"
+    className: "nginx"
+    annotations:
+      nginx.ingress.kubernetes.io/rewrite-target: "/$2"
+  serviceAccount: flink
+  jobManager:
+    resource:
+      memory: "1000m"
+      cpu: 0.5
+  taskManager:
+    resource:
+      memory: "1000m"
+      cpu: 0.5
+  job:
+    jarURI: local:///opt/flink/examples/streaming/StateMachineExample.jar
+    parallelism: 1
+    state: running
