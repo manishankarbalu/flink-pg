@@ -51,7 +51,8 @@ public class StreamingJob {
 
 	public void execute() throws Exception {
 		Configuration conf = new Configuration();
-		StreamExecutionEnvironment env = StreamExecutionEnvironment.createLocalEnvironmentWithWebUI(conf);
+		//StreamExecutionEnvironment env = StreamExecutionEnvironment.createLocalEnvironmentWithWebUI(conf);
+		StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment(conf);
 
 		DataStream<Long> LongStream =
 				env.addSource(source)
