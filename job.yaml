@@ -4,7 +4,7 @@ metadata:
   namespace: flink-jobs
   name: basic-example
 spec:
-  image: flink:1.17
+  image: manishankarbalu/flink-sales-job:v1.0.1
   flinkVersion: v1_17
   podTemplate:
     apiVersion: v1
@@ -40,6 +40,6 @@ spec:
       memory: "1000m"
       cpu: 0.5
   job:
-    jarURI: local:///opt/flink/examples/streaming/StateMachineExample.jar
-    parallelism: 1
+    jarURI: local:///opt/flink/examples/SalesAnalysis.jar
+    parallelism: 2
     state: running

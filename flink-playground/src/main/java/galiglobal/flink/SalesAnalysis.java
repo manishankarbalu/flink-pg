@@ -22,7 +22,7 @@ public class SalesAnalysis {
         if (resource == null) {
             throw new IllegalArgumentException("File not found!");
         }
-        String inputPath = resource.getPath();
+        String inputPath = "/tmp/generated_sales_data.csv" ;//resource.getPath();
 
 
         // Path to the output file
